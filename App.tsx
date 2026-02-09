@@ -23,15 +23,31 @@ import type {ProductItem} from './components/ProductCard';
 const TAB_LABELS = ['Home', 'Explore', 'Saved', 'Profile'];
 
 // Sample data for the horizontal list
-const LIST_ITEMS: ProductItem[] = Array.from({length: 12}, (_, i) => ({
+const INITIAL_ITEMS: ProductItem[] = Array.from({length: 12}, (_, i) => ({
   id: String(i + 1),
   title: `Item ${i + 1}`,
   subtitle: `Description for item ${i + 1}`,
+  impressionCount: 0,
 }));
 
 function App(): JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
   const [activeTab, setActiveTab] = useState(0);
+  const [items, setItems] = useState<ProductItem[]>(INITIAL_ITEMS);
+
+  const handleImpression = (itemId: string) => {
+    setItems(prev => {
+      const next = prev.map(p =>
+        p.id === itemId ? {...p, impressionCount: p.impressionCount + 1} : p,
+      );
+      const product = next.find(p => p.id === itemId);
+      const newCount = product?.impressionCount ?? 0;
+      console.log(
+        `Product ${itemId}: visibility criteria met, impression count updated to ${newCount}`,
+      );
+      return next;
+    });
+  };
 
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
@@ -82,10 +98,11 @@ function App(): JSX.Element {
       <View style={[styles.bodyWrapper, backgroundStyle]}>
         <ProductList
           title={TAB_LABELS[activeTab]}
-          items={LIST_ITEMS}
+          items={items}
           surfaceStyle={surfaceStyle}
           mutedColor={mutedColor}
           textColor={textColor}
+          onImpression={handleImpression}
         />
       </View>
     </SafeAreaView>

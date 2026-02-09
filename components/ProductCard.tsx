@@ -12,6 +12,7 @@ export interface ProductItem {
   id: string;
   title: string;
   subtitle: string;
+  impressionCount: number;
 }
 
 export interface ProductCardProps {
