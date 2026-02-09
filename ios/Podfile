@@ -17,7 +17,8 @@ prepare_react_native_project!
 #   dependencies: {
 #     ...(process.env.NO_FLIPPER ? { 'react-native-flipper': { platforms: { ios: null } } } : {}),
 # ```
-flipper_config = ENV['NO_FLIPPER'] == "1" ? FlipperConfiguration.disabled : FlipperConfiguration.enabled
+# Disable Flipper to avoid FlipperKit build failures (e.g. FlipperPlatformWebSocket). Set NO_FLIPPER=0 and re-enable below to use Flipper.
+flipper_config = ENV['NO_FLIPPER'] == "0" ? FlipperConfiguration.enabled : FlipperConfiguration.disabled
 
 linkage = ENV['USE_FRAMEWORKS']
 if linkage != nil

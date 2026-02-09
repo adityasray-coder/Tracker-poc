@@ -43,6 +43,7 @@ function ProductList({
   const containerWidthRef = useRef(0);
   const layoutByItemIdRef = useRef<Record<string, CardLayout>>({});
   const timersByItemIdRef = useRef<Record<string, ReturnType<typeof setTimeout>>>({});
+  const impressionRecordedByItemIdRef = useRef<Record<string, boolean>>({});
 
   const checkVisibility = useCallback(() => {
     const scrollX = scrollXRef.current;
@@ -67,11 +68,13 @@ function ProductList({
       const visibleRatio = cardWidth > 0 ? visibleWidth / cardWidth : 0;
 
       const timers = timersByItemIdRef.current;
+      const impressionRecorded = impressionRecordedByItemIdRef.current;
 
       if (visibleRatio >= VISIBILITY_THRESHOLD) {
-        if (!timers[item.id]) {
+        if (!timers[item.id] && !impressionRecorded[item.id]) {
           timers[item.id] = setTimeout(() => {
             onImpression(item.id);
+            impressionRecordedByItemIdRef.current[item.id] = true;
             delete timersByItemIdRef.current[item.id];
           }, IMPRESSION_DURATION_MS);
         }
@@ -80,6 +83,7 @@ function ProductList({
           clearTimeout(timers[item.id]);
           delete timers[item.id];
         }
+        impressionRecordedByItemIdRef.current[item.id] = false;
       }
     });
   }, [items, onImpression]);
