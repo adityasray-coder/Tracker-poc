@@ -8,7 +8,6 @@
 import React, {useState} from 'react';
 import {
   SafeAreaView,
-  ScrollView,
   StatusBar,
   StyleSheet,
   Text,
@@ -18,13 +17,13 @@ import {
 } from 'react-native';
 
 import {Colors} from 'react-native/Libraries/NewAppScreen';
+import ProductList from './components/ProductList';
+import type {ProductItem} from './components/ProductCard';
 
 const TAB_LABELS = ['Home', 'Explore', 'Saved', 'Profile'];
-const CARD_WIDTH = 160;
-const CARD_MARGIN = 12;
 
 // Sample data for the horizontal list
-const LIST_ITEMS = Array.from({length: 12}, (_, i) => ({
+const LIST_ITEMS: ProductItem[] = Array.from({length: 12}, (_, i) => ({
   id: String(i + 1),
   title: `Item ${i + 1}`,
   subtitle: `Description for item ${i + 1}`,
@@ -80,29 +79,14 @@ function App(): JSX.Element {
       </View>
 
       {/* Horizontally scrollable list */}
-      <View style={[styles.body, backgroundStyle]}>
-        <Text style={[styles.sectionTitle, {color: textColor}]}>
-          {TAB_LABELS[activeTab]}
-        </Text>
-        <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={styles.horizontalListContent}
-          style={styles.horizontalList}>
-          {LIST_ITEMS.map(item => (
-            <View
-              key={item.id}
-              style={[styles.card, surfaceStyle, {borderColor: mutedColor}]}>
-              <View style={[styles.cardThumb, {backgroundColor: mutedColor}]} />
-              <Text style={[styles.cardTitle, {color: textColor}]} numberOfLines={1}>
-                {item.title}
-              </Text>
-              <Text style={[styles.cardSubtitle, {color: mutedColor}]} numberOfLines={2}>
-                {item.subtitle}
-              </Text>
-            </View>
-          ))}
-        </ScrollView>
+      <View style={[styles.bodyWrapper, backgroundStyle]}>
+        <ProductList
+          title={TAB_LABELS[activeTab]}
+          items={LIST_ITEMS}
+          surfaceStyle={surfaceStyle}
+          mutedColor={mutedColor}
+          textColor={textColor}
+        />
       </View>
     </SafeAreaView>
   );
@@ -132,44 +116,8 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: '600',
   },
-  body: {
+  bodyWrapper: {
     flex: 1,
-    paddingTop: 16,
-  },
-  sectionTitle: {
-    fontSize: 20,
-    fontWeight: '600',
-    paddingHorizontal: 20,
-    marginBottom: 12,
-  },
-  horizontalList: {
-    flexGrow: 0,
-  },
-  horizontalListContent: {
-    paddingHorizontal: 20,
-    paddingBottom: 24,
-  },
-  card: {
-    width: CARD_WIDTH,
-    marginRight: CARD_MARGIN,
-    padding: 12,
-    borderRadius: 12,
-    borderWidth: StyleSheet.hairlineWidth,
-  },
-  cardThumb: {
-    width: '100%',
-    aspectRatio: 1,
-    borderRadius: 8,
-    marginBottom: 8,
-    opacity: 0.3,
-  },
-  cardTitle: {
-    fontSize: 16,
-    fontWeight: '600',
-    marginBottom: 4,
-  },
-  cardSubtitle: {
-    fontSize: 12,
   },
 });
 
