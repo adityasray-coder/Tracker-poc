@@ -8,6 +8,7 @@
 import React, {useState} from 'react';
 import {
   SafeAreaView,
+  ScrollView,
   StatusBar,
   StyleSheet,
   Text,
@@ -44,7 +45,7 @@ const PALETTE = {
 };
 
 // Sample data for the horizontal list
-const LIST_ITEMS: ProductItem[] = Array.from({length: 12}, (_, i) => ({
+const LIST_ITEMS: ProductItem[] = Array.from({length: 5}, (_, i) => ({
   id: String(i + 1),
   title: `Item ${i + 1}`,
   subtitle: `Description for item ${i + 1}`,
@@ -53,7 +54,17 @@ const LIST_ITEMS: ProductItem[] = Array.from({length: 12}, (_, i) => ({
 function App(): JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
   const [activeTab, setActiveTab] = useState(0);
+  const [impressionCounts, setImpressionCounts] = useState<Record<string, number>>({});
   const colors = isDarkMode ? PALETTE.dark : PALETTE.light;
+
+  const handleImpression = (itemId: string) => {
+    setImpressionCounts(prev => {
+      const next = (prev[itemId] ?? 0) + 1;
+      const nextState = {...prev, [itemId]: next};
+      console.log(`[Impression] item ${itemId} | count: ${next}`);
+      return nextState;
+    });
+  };
 
   return (
     <SafeAreaView style={[styles.container, {backgroundColor: colors.background}]}>
@@ -88,7 +99,17 @@ function App(): JSX.Element {
         ))}
       </View>
 
-      <View style={[styles.bodyWrapper, {backgroundColor: colors.background}]}>
+      <ScrollView
+        style={[styles.bodyWrapper, {backgroundColor: colors.background}]}
+        contentContainerStyle={styles.scrollContent}
+        showsVerticalScrollIndicator={false}>
+        <Text style={[styles.loremText, {color: colors.text}]}>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+          Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+          Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
+          Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
+        </Text>
+        
         <ProductList
           title={TAB_LABELS[activeTab]}
           items={LIST_ITEMS}
@@ -97,8 +118,9 @@ function App(): JSX.Element {
           textColor={colors.text}
           accentColor={colors.accent}
           cardBorderColor={colors.cardBorder}
+          onImpression={handleImpression}
         />
-      </View>
+      </ScrollView>
     </SafeAreaView>
   );
 }
@@ -142,6 +164,17 @@ const styles = StyleSheet.create({
   },
   bodyWrapper: {
     flex: 1,
+  },
+  scrollContent: {
+    flexGrow: 1,
+    paddingBottom: 24,
+  },
+  loremText: {
+    fontSize: 50,
+    paddingHorizontal: 20,
+    paddingTop: 20,
+    paddingBottom: 24,
+    lineHeight: 60,
   },
 });
 

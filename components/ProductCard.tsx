@@ -23,7 +23,7 @@ export interface ProductCardProps {
   textColor: string;
   accentColor?: string;
   cardBorderColor?: string;
-  onAppear?: () => void;
+  onAppear?: (itemId: string) => void;
 }
 
 function ProductCard({
@@ -47,8 +47,7 @@ function ProductCard({
         Platform.OS === 'ios' ? styles.cardShadowIos : styles.cardShadowAndroid,
       ]}
       onNativeAppear={() => {
-        console.log('ProductCard onAppear (native viewport), item id:', item.id);
-        onAppear?.();
+        onAppear?.(item.id);
       }}>
       <View style={[styles.cardThumb, {backgroundColor: thumbColor}]} />
       <Text style={[styles.cardTitle, {color: textColor}]} numberOfLines={1}>

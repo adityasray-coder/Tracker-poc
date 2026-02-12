@@ -14,6 +14,7 @@ export interface ProductListProps {
   textColor: string;
   accentColor?: string;
   cardBorderColor?: string;
+  onImpression?: (itemId: string) => void;
 }
 
 function ProductList({
@@ -24,6 +25,7 @@ function ProductList({
   textColor,
   accentColor,
   cardBorderColor,
+  onImpression,
 }: ProductListProps): JSX.Element {
   return (
     <View style={styles.body}>
@@ -42,6 +44,7 @@ function ProductList({
             textColor={textColor}
             accentColor={accentColor}
             cardBorderColor={cardBorderColor}
+            onAppear={onImpression}
           />
         ))}
       </ScrollView>
