@@ -119,7 +119,7 @@ function App(): JSX.Element {
           accentColor={colors.accent}
           cardBorderColor={colors.cardBorder}
           onImpression={handleImpression}
-        />
+        />        
       </ScrollView>
     </SafeAreaView>
   );
