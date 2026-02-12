@@ -14,6 +14,9 @@
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		7699B88040F8A987B510C191 /* libPods-TrackerApp72-TrackerApp72Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-TrackerApp72-TrackerApp72Tests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		9A1B2C3D4E5F6001B75B9A /* MyNativeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A1B2C3D4E5F6001A75B9A /* MyNativeView.swift */; };
+		9A1B2C3D4E5F6002B75B9A /* MyNativeView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9A1B2C3D4E5F6003A75B9A /* MyNativeView.mm */; };
+		9A1B2C3D4E5F6003B75B9A /* MyNativeViewManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9A1B2C3D4E5F6005A75B9A /* MyNativeViewManager.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -43,6 +46,11 @@
 		5DCACB8F33CDC322A6C60F78 /* libPods-TrackerApp72.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TrackerApp72.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = TrackerApp72/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-TrackerApp72-TrackerApp72Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TrackerApp72-TrackerApp72Tests.release.xcconfig"; path = "Target Support Files/Pods-TrackerApp72-TrackerApp72Tests/Pods-TrackerApp72-TrackerApp72Tests.release.xcconfig"; sourceTree = "<group>"; };
+		9A1B2C3D4E5F6001A75B9A /* MyNativeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MyNativeView.swift; path = TrackerApp72/MyNativeView.swift; sourceTree = "<group>"; };
+		9A1B2C3D4E5F6002A75B9A /* MyNativeView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = MyNativeView.h; path = TrackerApp72/MyNativeView.h; sourceTree = "<group>"; };
+		9A1B2C3D4E5F6003A75B9A /* MyNativeView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = MyNativeView.mm; path = TrackerApp72/MyNativeView.mm; sourceTree = "<group>"; };
+		9A1B2C3D4E5F6004A75B9A /* MyNativeViewManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = MyNativeViewManager.h; path = TrackerApp72/MyNativeViewManager.h; sourceTree = "<group>"; };
+		9A1B2C3D4E5F6005A75B9A /* MyNativeViewManager.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = MyNativeViewManager.mm; path = TrackerApp72/MyNativeViewManager.mm; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -92,6 +100,11 @@
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
 				13B07FB71A68108700A75B9A /* main.m */,
+				9A1B2C3D4E5F6001A75B9A /* MyNativeView.swift */,
+				9A1B2C3D4E5F6002A75B9A /* MyNativeView.h */,
+				9A1B2C3D4E5F6003A75B9A /* MyNativeView.mm */,
+				9A1B2C3D4E5F6004A75B9A /* MyNativeViewManager.h */,
+				9A1B2C3D4E5F6005A75B9A /* MyNativeViewManager.mm */,
 			);
 			name = TrackerApp72;
 			sourceTree = "<group>";
@@ -414,6 +427,9 @@
 			files = (
 				13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
+				9A1B2C3D4E5F6001B75B9A /* MyNativeView.swift in Sources */,
+				9A1B2C3D4E5F6002B75B9A /* MyNativeView.mm in Sources */,
+				9A1B2C3D4E5F6003B75B9A /* MyNativeViewManager.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -438,7 +454,7 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = TrackerApp72Tests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -462,7 +478,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
 				INFOPLIST_FILE = TrackerApp72Tests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -581,7 +597,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					/usr/lib/swift,
 					"$(inherited)",
@@ -656,7 +672,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					/usr/lib/swift,
 					"$(inherited)",

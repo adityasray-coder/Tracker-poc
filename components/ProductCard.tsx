@@ -4,6 +4,7 @@
 
 import React from 'react';
 import {StyleSheet, Text, View, ViewStyle} from 'react-native';
+import MyNativeView from './native/MyNativeViewNativeComponent';
 
 const CARD_WIDTH = 160;
 const CARD_MARGIN = 12;
@@ -12,7 +13,6 @@ export interface ProductItem {
   id: string;
   title: string;
   subtitle: string;
-  impressionCount: number;
 }
 
 export interface ProductCardProps {
@@ -20,12 +20,17 @@ export interface ProductCardProps {
   surfaceStyle: ViewStyle;
   mutedColor: string;
   textColor: string;
+  onAppear?: () => void;
 }
 
-function ProductCard({item, surfaceStyle, mutedColor, textColor}: ProductCardProps): JSX.Element {
+function ProductCard({item, surfaceStyle, mutedColor, textColor, onAppear}: ProductCardProps): JSX.Element {
   return (
-    <View
-      style={[styles.card, surfaceStyle, {borderColor: mutedColor}]}>
+    <MyNativeView
+      style={[styles.card, surfaceStyle, {borderColor: mutedColor}]}
+      onNativeAppear={() => {
+        console.log('ProductCard onAppear triggered, item id:', item.id);
+        onAppear?.();
+      }}>
       <View style={[styles.cardThumb, {backgroundColor: mutedColor}]} />
       <Text style={[styles.cardTitle, {color: textColor}]} numberOfLines={1}>
         {item.title}
@@ -33,7 +38,7 @@ function ProductCard({item, surfaceStyle, mutedColor, textColor}: ProductCardPro
       <Text style={[styles.cardSubtitle, {color: mutedColor}]} numberOfLines={2}>
         {item.subtitle}
       </Text>
-    </View>
+    </MyNativeView>
   );
 }
 
