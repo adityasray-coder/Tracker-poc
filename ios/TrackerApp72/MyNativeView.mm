@@ -8,16 +8,21 @@
 #endif
 
 static void *kContentOffsetContext = &kContentOffsetContext;
+static const double kVisibilityThreshold = 0.70;   // 70% of card must be visible
+static const NSTimeInterval kRequiredDuration = 2.0;  // 2 seconds
 
 @interface MyNativeView ()
 @property (nonatomic, assign) BOOL swiftAttached;
 @property (nonatomic, assign) BOOL hasFiredViewportAppear;
 @property (nonatomic, weak) UIScrollView *observedScrollView;
+@property (nonatomic, strong) NSTimer *visibilityDurationTimer;
 @end
 
 @implementation MyNativeView
 
 - (void)dealloc {
+  [_visibilityDurationTimer invalidate];
+  _visibilityDurationTimer = nil;
   if (_observedScrollView) {
     [_observedScrollView removeObserver:self forKeyPath:@"contentOffset" context:kContentOffsetContext];
     _observedScrollView = nil;
@@ -35,25 +40,32 @@ static void *kContentOffsetContext = &kContentOffsetContext;
   return nil;
 }
 
-- (BOOL)isInViewport {
+/// Returns the fraction of this view that is visible within the scroll viewport (0.0 to 1.0). Returns 1.0 if no scroll view.
+- (double)visibleRatioInViewport {
   UIScrollView *scrollView = [self findScrollView];
-  if (!scrollView) return YES;
+  if (!scrollView) return 1.0;
   UIView *contentView = scrollView.subviews.firstObject;
-  if (!contentView) return YES;
+  if (!contentView) return 1.0;
   CGRect myFrameInContent = [self convertRect:self.bounds toView:contentView];
   CGRect visibleRect = CGRectMake(
       scrollView.contentOffset.x,
       scrollView.contentOffset.y,
       scrollView.bounds.size.width,
       scrollView.bounds.size.height);
-  return CGRectIntersectsRect(visibleRect, myFrameInContent);
+  CGRect intersection = CGRectIntersection(visibleRect, myFrameInContent);
+  if (CGRectIsNull(intersection)) return 0.0;
+  CGFloat viewArea = myFrameInContent.size.width * myFrameInContent.size.height;
+  if (viewArea <= 0) return 0.0;
+  CGFloat visibleArea = intersection.size.width * intersection.size.height;
+  return (double)(visibleArea / viewArea);
 }
 
-- (void)checkVisibilityAndFireIfNeeded {
+- (void)fireAppearIfNeeded {
   if (_hasFiredViewportAppear || !_onNativeAppear) return;
-  if (![self isInViewport]) return;
 
   _hasFiredViewportAppear = YES;
+  [_visibilityDurationTimer invalidate];
+  _visibilityDurationTimer = nil;
   if (_observedScrollView) {
     [_observedScrollView removeObserver:self forKeyPath:@"contentOffset" context:kContentOffsetContext];
     _observedScrollView = nil;
@@ -61,12 +73,36 @@ static void *kContentOffsetContext = &kContentOffsetContext;
   _onNativeAppear(nil);
 }
 
+- (void)checkVisibilityAndUpdateTimer {
+  if (_hasFiredViewportAppear || !_onNativeAppear) return;
+
+  double ratio = [self visibleRatioInViewport];
+
+  if (ratio >= kVisibilityThreshold) {
+    if (!_visibilityDurationTimer) {
+      __weak __typeof(self) weakSelf = self;
+      _visibilityDurationTimer = [NSTimer scheduledTimerWithTimeInterval:kRequiredDuration
+                                                                  repeats:NO
+                                                                    block:^(NSTimer * _Nonnull timer) {
+        __strong __typeof(weakSelf) strongSelf = weakSelf;
+        if (strongSelf) {
+          [strongSelf fireAppearIfNeeded];
+        }
+      }];
+      [[NSRunLoop mainRunLoop] addTimer:_visibilityDurationTimer forMode:NSRunLoopCommonModes];
+    }
+  } else {
+    [_visibilityDurationTimer invalidate];
+    _visibilityDurationTimer = nil;
+  }
+}
+
 - (void)observeValueForKeyPath:(NSString *)keyPath
                       ofObject:(id)object
                         change:(NSDictionary *)change
                        context:(void *)context {
   if (context == kContentOffsetContext && [keyPath isEqualToString:@"contentOffset"]) {
-    [self checkVisibilityAndFireIfNeeded];
+    [self checkVisibilityAndUpdateTimer];
     return;
   }
   [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
@@ -74,7 +110,7 @@ static void *kContentOffsetContext = &kContentOffsetContext;
 
 - (void)whenSwiftAppearFires {
   if (!_onNativeAppear) return;
-  [self checkVisibilityAndFireIfNeeded];
+  [self checkVisibilityAndUpdateTimer];
   if (_hasFiredViewportAppear) return;
   UIScrollView *scrollView = [self findScrollView];
   if (scrollView && !_observedScrollView) {
