@@ -1,5 +1,6 @@
 /**
  * Single product/item card for the horizontal list.
+ * Uses native MyNativeView (SwiftUI .onAppear); the native side only fires when the card is in the viewport.
  */
 
 import React from 'react';
@@ -28,7 +29,7 @@ function ProductCard({item, surfaceStyle, mutedColor, textColor, onAppear}: Prod
     <MyNativeView
       style={[styles.card, surfaceStyle, {borderColor: mutedColor}]}
       onNativeAppear={() => {
-        console.log('ProductCard onAppear triggered, item id:', item.id);
+        console.log('ProductCard onAppear (native viewport), item id:', item.id);
         onAppear?.();
       }}>
       <View style={[styles.cardThumb, {backgroundColor: mutedColor}]} />
