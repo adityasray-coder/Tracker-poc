@@ -4,11 +4,11 @@
  */
 
 import React from 'react';
-import {StyleSheet, Text, View, ViewStyle} from 'react-native';
+import {Platform, StyleSheet, Text, View, ViewStyle} from 'react-native';
 import MyNativeView from './native/MyNativeViewNativeComponent';
 
-const CARD_WIDTH = 160;
-const CARD_MARGIN = 12;
+const CARD_WIDTH = 168;
+const CARD_MARGIN = 14;
 
 export interface ProductItem {
   id: string;
@@ -21,18 +21,36 @@ export interface ProductCardProps {
   surfaceStyle: ViewStyle;
   mutedColor: string;
   textColor: string;
+  accentColor?: string;
+  cardBorderColor?: string;
   onAppear?: () => void;
 }
 
-function ProductCard({item, surfaceStyle, mutedColor, textColor, onAppear}: ProductCardProps): JSX.Element {
+function ProductCard({
+  item,
+  surfaceStyle,
+  mutedColor,
+  textColor,
+  accentColor,
+  cardBorderColor,
+  onAppear,
+}: ProductCardProps): JSX.Element {
+  const borderColor = cardBorderColor ?? mutedColor;
+  const thumbColor = accentColor ?? mutedColor;
+
   return (
     <MyNativeView
-      style={[styles.card, surfaceStyle, {borderColor: mutedColor}]}
+      style={[
+        styles.card,
+        surfaceStyle,
+        {borderColor},
+        Platform.OS === 'ios' ? styles.cardShadowIos : styles.cardShadowAndroid,
+      ]}
       onNativeAppear={() => {
         console.log('ProductCard onAppear (native viewport), item id:', item.id);
         onAppear?.();
       }}>
-      <View style={[styles.cardThumb, {backgroundColor: mutedColor}]} />
+      <View style={[styles.cardThumb, {backgroundColor: thumbColor}]} />
       <Text style={[styles.cardTitle, {color: textColor}]} numberOfLines={1}>
         {item.title}
       </Text>
@@ -47,24 +65,35 @@ const styles = StyleSheet.create({
   card: {
     width: CARD_WIDTH,
     marginRight: CARD_MARGIN,
-    padding: 12,
-    borderRadius: 12,
-    borderWidth: StyleSheet.hairlineWidth,
+    padding: 14,
+    borderRadius: 16,
+    borderWidth: 1,
+  },
+  cardShadowIos: {
+    shadowColor: '#000',
+    shadowOffset: {width: 0, height: 4},
+    shadowOpacity: 0.08,
+    shadowRadius: 8,
+  },
+  cardShadowAndroid: {
+    elevation: 4,
   },
   cardThumb: {
     width: '100%',
     aspectRatio: 1,
-    borderRadius: 8,
-    marginBottom: 8,
-    opacity: 0.3,
+    borderRadius: 12,
+    marginBottom: 10,
+    opacity: 0.85,
   },
   cardTitle: {
     fontSize: 16,
-    fontWeight: '600',
+    fontWeight: '700',
     marginBottom: 4,
   },
   cardSubtitle: {
-    fontSize: 12,
+    fontSize: 13,
+    lineHeight: 18,
+    opacity: 0.9,
   },
 });
 

@@ -14,13 +14,34 @@ import {
   useColorScheme,
   View,
   Pressable,
+  Platform,
 } from 'react-native';
 
-import {Colors} from 'react-native/Libraries/NewAppScreen';
 import ProductList from './components/ProductList';
 import type {ProductItem} from './components/ProductCard';
 
 const TAB_LABELS = ['Home', 'Explore', 'Saved', 'Profile'];
+
+const PALETTE = {
+  light: {
+    background: '#F1F5F9',
+    surface: '#FFFFFF',
+    text: '#0F172A',
+    muted: '#64748B',
+    accent: '#6366F1',
+    tabInactive: '#94A3B8',
+    cardBorder: '#E2E8F0',
+  },
+  dark: {
+    background: '#0F172A',
+    surface: '#1E293B',
+    text: '#F8FAFC',
+    muted: '#94A3B8',
+    accent: '#818CF8',
+    tabInactive: '#64748B',
+    cardBorder: '#334155',
+  },
+};
 
 // Sample data for the horizontal list
 const LIST_ITEMS: ProductItem[] = Array.from({length: 12}, (_, i) => ({
@@ -32,44 +53,33 @@ const LIST_ITEMS: ProductItem[] = Array.from({length: 12}, (_, i) => ({
 function App(): JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
   const [activeTab, setActiveTab] = useState(0);
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
-  const surfaceStyle = {
-    backgroundColor: isDarkMode ? Colors.black : Colors.white,
-  };
-  const textColor = isDarkMode ? Colors.white : Colors.black;
-  const mutedColor = isDarkMode ? Colors.light : Colors.dark;
-  const tabActiveBg = isDarkMode ? Colors.light : Colors.dark;
-  const tabInactiveBg = 'transparent';
-  const tabActiveText = isDarkMode ? Colors.black : Colors.white;
-  const tabInactiveText = mutedColor;
+  const colors = isDarkMode ? PALETTE.dark : PALETTE.light;
 
   return (
-    <SafeAreaView style={[styles.container, backgroundStyle]}>
+    <SafeAreaView style={[styles.container, {backgroundColor: colors.background}]}>
       <StatusBar
         barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
+        backgroundColor={colors.background}
       />
 
-      {/* Top tabs */}
-      <View style={[styles.tabBar, surfaceStyle]}>
+      <View style={[styles.tabBar, {backgroundColor: colors.surface}]}>
         {TAB_LABELS.map((label, index) => (
           <Pressable
             key={label}
-            style={[
+            style={({pressed}) => [
               styles.tab,
               activeTab === index && {
-                backgroundColor: tabActiveBg,
+                backgroundColor: colors.accent,
+                ...(Platform.OS === 'ios' && styles.tabActiveShadow),
               },
+              pressed && {opacity: 0.9},
             ]}
             onPress={() => setActiveTab(index)}>
             <Text
               style={[
                 styles.tabLabel,
                 {
-                  color: activeTab === index ? tabActiveText : tabInactiveText,
+                  color: activeTab === index ? '#FFFFFF' : colors.tabInactive,
                 },
               ]}>
               {label}
@@ -78,14 +88,15 @@ function App(): JSX.Element {
         ))}
       </View>
 
-      {/* Horizontally scrollable list */}
-      <View style={[styles.bodyWrapper, backgroundStyle]}>
+      <View style={[styles.bodyWrapper, {backgroundColor: colors.background}]}>
         <ProductList
           title={TAB_LABELS[activeTab]}
           items={LIST_ITEMS}
-          surfaceStyle={surfaceStyle}
-          mutedColor={mutedColor}
-          textColor={textColor}
+          surfaceStyle={{backgroundColor: colors.surface}}
+          mutedColor={colors.muted}
+          textColor={colors.text}
+          accentColor={colors.accent}
+          cardBorderColor={colors.cardBorder}
         />
       </View>
     </SafeAreaView>
@@ -98,19 +109,32 @@ const styles = StyleSheet.create({
   },
   tabBar: {
     flexDirection: 'row',
-    paddingHorizontal: 8,
-    paddingVertical: 8,
-    gap: 8,
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: 'rgba(0,0,0,0.1)',
+    paddingHorizontal: 10,
+    paddingVertical: 10,
+    gap: 10,
+    ...Platform.select({
+      ios: {
+        shadowColor: '#000',
+        shadowOffset: {width: 0, height: 2},
+        shadowOpacity: 0.06,
+        shadowRadius: 4,
+      },
+      android: {elevation: 3},
+    }),
   },
   tab: {
     flex: 1,
-    paddingVertical: 10,
-    paddingHorizontal: 12,
-    borderRadius: 8,
+    paddingVertical: 12,
+    paddingHorizontal: 14,
+    borderRadius: 12,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  tabActiveShadow: {
+    shadowColor: '#6366F1',
+    shadowOffset: {width: 0, height: 2},
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
   },
   tabLabel: {
     fontSize: 14,

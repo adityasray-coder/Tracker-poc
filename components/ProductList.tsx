@@ -12,6 +12,8 @@ export interface ProductListProps {
   surfaceStyle: ViewStyle;
   mutedColor: string;
   textColor: string;
+  accentColor?: string;
+  cardBorderColor?: string;
 }
 
 function ProductList({
@@ -20,6 +22,8 @@ function ProductList({
   surfaceStyle,
   mutedColor,
   textColor,
+  accentColor,
+  cardBorderColor,
 }: ProductListProps): JSX.Element {
   return (
     <View style={styles.body}>
@@ -36,6 +40,8 @@ function ProductList({
             surfaceStyle={surfaceStyle}
             mutedColor={mutedColor}
             textColor={textColor}
+            accentColor={accentColor}
+            cardBorderColor={cardBorderColor}
           />
         ))}
       </ScrollView>
@@ -46,20 +52,21 @@ function ProductList({
 const styles = StyleSheet.create({
   body: {
     flex: 1,
-    paddingTop: 16,
+    paddingTop: 20,
   },
   sectionTitle: {
-    fontSize: 20,
-    fontWeight: '600',
+    fontSize: 24,
+    fontWeight: '700',
     paddingHorizontal: 20,
-    marginBottom: 12,
+    marginBottom: 16,
+    letterSpacing: 0.3,
   },
   horizontalList: {
     flexGrow: 0,
   },
   horizontalListContent: {
     paddingHorizontal: 20,
-    paddingBottom: 24,
+    paddingBottom: 28,
   },
 });
 
