@@ -103,11 +103,11 @@ function App(): JSX.Element {
         style={[styles.bodyWrapper, {backgroundColor: colors.background}]}
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}>
-        <Text style={[styles.loremText, {color: colors.text}]}>
+        {/* <Text style={[styles.loremText, {color: colors.text}]}>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
           Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
           Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
-        </Text>
+        </Text> */}
         
         <ProductList
           title={TAB_LABELS[activeTab]}

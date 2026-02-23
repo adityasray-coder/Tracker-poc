@@ -17,6 +17,7 @@
 		9A1B2C3D4E5F6001B75B9A /* MyNativeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A1B2C3D4E5F6001A75B9A /* MyNativeView.swift */; };
 		9A1B2C3D4E5F6002B75B9A /* MyNativeView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9A1B2C3D4E5F6003A75B9A /* MyNativeView.mm */; };
 		9A1B2C3D4E5F6003B75B9A /* MyNativeViewManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9A1B2C3D4E5F6005A75B9A /* MyNativeViewManager.mm */; };
+		9A1B2C3D4E5F6006B75B9A /* ImpressionTracker.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9A1B2C3D4E5F6007A75B9A /* ImpressionTracker.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,6 +52,8 @@
 		9A1B2C3D4E5F6003A75B9A /* MyNativeView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = MyNativeView.mm; path = TrackerApp72/MyNativeView.mm; sourceTree = "<group>"; };
 		9A1B2C3D4E5F6004A75B9A /* MyNativeViewManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = MyNativeViewManager.h; path = TrackerApp72/MyNativeViewManager.h; sourceTree = "<group>"; };
 		9A1B2C3D4E5F6005A75B9A /* MyNativeViewManager.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = MyNativeViewManager.mm; path = TrackerApp72/MyNativeViewManager.mm; sourceTree = "<group>"; };
+		9A1B2C3D4E5F6006A75B9A /* ImpressionTracker.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ImpressionTracker.h; path = TrackerApp72/ImpressionTracker.h; sourceTree = "<group>"; };
+		9A1B2C3D4E5F6007A75B9A /* ImpressionTracker.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = ImpressionTracker.mm; path = TrackerApp72/ImpressionTracker.mm; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -105,6 +108,8 @@
 				9A1B2C3D4E5F6003A75B9A /* MyNativeView.mm */,
 				9A1B2C3D4E5F6004A75B9A /* MyNativeViewManager.h */,
 				9A1B2C3D4E5F6005A75B9A /* MyNativeViewManager.mm */,
+				9A1B2C3D4E5F6006A75B9A /* ImpressionTracker.h */,
+				9A1B2C3D4E5F6007A75B9A /* ImpressionTracker.mm */,
 			);
 			name = TrackerApp72;
 			sourceTree = "<group>";
@@ -430,6 +435,7 @@
 				9A1B2C3D4E5F6001B75B9A /* MyNativeView.swift in Sources */,
 				9A1B2C3D4E5F6002B75B9A /* MyNativeView.mm in Sources */,
 				9A1B2C3D4E5F6003B75B9A /* MyNativeViewManager.mm in Sources */,
+				9A1B2C3D4E5F6006B75B9A /* ImpressionTracker.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
